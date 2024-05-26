@@ -14,7 +14,8 @@ using namespace std;
 /*
  * List - Interface for some basic feature 
 */
-template <class T> class List {
+template <class T>
+class List {
     public:
         List() {}
         virtual ~List() {}
@@ -24,10 +25,10 @@ template <class T> class List {
         virtual void clear() = 0;
         virtual List<T>* clone() = 0;
 
-        virtual void insert(const &T val, const int indx) = 0;
+        virtual void insert(const T& val, const int indx) = 0;
         virtual void remove(const int indx) = 0;
-        virtual int findIdx(const &T val) = 0;
-        virtual T* findP(const &T val) = 0;
+        virtual int findIdx(const T& val) = 0;
+        virtual T* findP(const T& val) = 0;
         virtual T& operator[](int indx) = 0;
 
         virtual List<T>& split(int indx) = 0;
@@ -41,34 +42,26 @@ class ArrayList: public List<T> {
         T* pD;
         int nE, cap;
     public:
-        ArrayList(): pD(nullptr), nE(0), cap(0) {}
-        ArrayList(int N): nE(0), cap(N) { pD = new T[N]; }
-        ArrayList(int N, T E): nE(N), cap(N) {
-            pD = new T[N];
-            for (int i = 0; i < N; ++i) pD = E;
-        }
-        ~ArrayList() { this->clear(); }
+        ArrayList();
+        ArrayList(int N);
+        ArrayList(int N, T E);
+        ~ArrayList();
 
-        void reSize(int N) {
-            if (cap == N) {
-                cap = (N + ARRAYDATABLOCK - 1)/(ARRAYDATABLOCK)*ARRAYDATABLOCK;
-                pD = new T[cap];
-            }
-            return;
-        }
+        void reSize(int N);
+
         int getSize();
         bool isEmpty();
         void clear();
-        virtual List<T>* clone();
+        List<T>* clone();
 
-        void insert(const &T val, const int indx);
+        void insert(const T& val, const int indx);
         void remove(const int indx);
-        int findIdx(const &T val);
-        T* findP(const &T val);
+        int findIdx(const T& val);
+        T* findP(const T& val);
         T& operator[](int indx);
         
-        ArrayList& operator=(List<T>&);
-        List<T>* split(int indx);
+        ArrayList<T>& operator=(List<T>&);
+        List<T>& split(int indx);
         List<T>& merge(List<T>& aL);
 };
 
