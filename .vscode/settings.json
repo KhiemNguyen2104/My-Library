@@ -48,5 +48,9 @@
         "sstream": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp"
-    }
+    },
+    "cSpell.words": [
+        "ARRAYDATABLOCK",
+        "newcap"
+    ]
 }

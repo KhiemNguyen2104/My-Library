@@ -2,7 +2,7 @@
 
 # Description
 
-A repository for storing some code typed by me in Data Structure and Algorithm.
+A repository for storing some code typed by me in Data Structure and Algorithm course.
 
 # Project structure
 

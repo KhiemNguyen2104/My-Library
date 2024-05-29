@@ -31,16 +31,20 @@ class List {
         virtual T* findP(const T& val) = 0;
         virtual T& operator[](int indx) = 0;
 
-        virtual List<T>& split(int indx) = 0;
+        virtual List<T>& split(int indx, bool flag = true) = 0;
         virtual List<T>& merge(List<T>* aL) = 0;
         virtual void reverse() = 0;
+
+        virtual void printList() = 0;
 };
 
 template <class T>
 class ArrayList: public List<T> {
     protected:
+
         T* pD;
         int nE, cap;
+
     public:
         ArrayList();
         ArrayList(int N);
@@ -54,21 +58,33 @@ class ArrayList: public List<T> {
         void clear();
         List<T>* clone();
 
-        void insert(const T& val, const int indx);
+        void insert(T& val, const int indx);
         void remove(const int indx);
         int findIdx(const T& val);
         T* findP(const T& val);
         T& operator[](int indx);
         
         ArrayList<T>& operator=(List<T>&);
-        List<T>& split(int indx);
+        List<T>& split(int indx, bool flag = true);
         List<T>& merge(List<T>& aL);
+
+        void printList();
 };
 
 template <class T>
 class SinglyLinkedList: public List<T> {
-    
+    protected:
+
+        struct SLNode {
+            T value;
+            SLNode* pNext;
+        };
+        
+        SLNode* root;
+        int size;
+
+    public:
+
+        
 };
-
-
 #endif //__LIST_H__

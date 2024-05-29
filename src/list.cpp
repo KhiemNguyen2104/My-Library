@@ -1,4 +1,4 @@
-#include "list.h"
+#include <list/list.h>
 
 using namespace std;
 
@@ -17,9 +17,16 @@ template <class T> ArrayList<T>::ArrayList(int N, T E): nE(N), cap(N) {
 template <class T> ArrayList<T>::~ArrayList() { this->clear(); }
 
 template <class T> void ArrayList<T>::reSize(int N) {
-    if (cap == N) {
-        cap = (N + ARRAYDATABLOCK - 1)/(ARRAYDATABLOCK)*ARRAYDATABLOCK;
-        pD = new T[cap];
+    if (this->cap == N) {
+        int newcap = (N + ARRAYDATABLOCK - 1)/(ARRAYDATABLOCK)*ARRAYDATABLOCK;
+        T* newpD = new T[newcap];
+
+        for (int i = 0; i < this->nE; ++i) newpD[i] = this->pD[i];
+
+        delete [] pD;
+        pD = newpD;
+        this->cap = newcap;
+        newpD = nullptr;
     }
     return;
 }
@@ -45,7 +52,7 @@ template <class T> List<T>* ArrayList<T>::clone() {
     return CloneArr;
 }
 
-template <class T> void ArrayList<T>::insert(const T& val, const int indx) {
+template <class T> void ArrayList<T>::insert(T& val, const int indx) {
     try {
         if (indx > nE || indx < 0) throw std::range_error("ArrayList::insert() -> Invalid index.\n");
         
@@ -123,9 +130,46 @@ template <class T> ArrayList<T>& ArrayList<T>::operator=(List<T>& aL) {
             ap++;
         }
 
-        return this;
+        return &(*this);
     }
     catch (std::exception& e) {
         cerr << e.what();
     }
+}
+
+template <class T> List<T>& ArrayList<T>::split(int indx, bool flag = true) {
+    if (indx < 0 || indx >= this->nE) throw range_error("ArrayList::split() -> Invalid index.\n");
+    if (flag) {
+        for (int i = indx; i < this->nE) this->remove(this->nE - 1);
+
+        return &(*this);
+    }
+    else {
+        for (int i = 0; i < this->nE - indx; ++i) this->pD[i] = this->pD[indx + i];
+        this->nE = this->nE - indx;
+
+        return &(*this);
+    }
+}
+
+template <class T> List<T>& ArrayList<T>::merge(List<T>& aL) {
+    int size = aL.getSize();
+
+    for (int i = 0; i < size; ++i) this->insert(aL[i], this->nE);
+
+    aL->clear();
+
+    return &(*this);
+}
+
+template <class T> void ArrayList<T>::printList() {
+    if (this->isEmpty()) {
+        cout << "<Empty list>\n";
+        return;
+    }
+    
+    for (int i = 0; i < this->nE - 1; ++i) cout << this->pD[i];
+    cout << this->pD[this->nE - 1] << endl;
+
+    return;
 }
